@@ -3,7 +3,7 @@ import React, {createContext, useState} from 'react';
 export const TodoContext = createContext();
 
 function TodoContextProvider(props) {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState([{task: 'do something'}]);
 
   const createTodo = () => {};
 
@@ -15,7 +15,7 @@ function TodoContextProvider(props) {
 
   return (
     <TodoContext.Provider value={{
-      ...todos,
+      todos,
       createTodo,
       readTodo,
       updateTodo,

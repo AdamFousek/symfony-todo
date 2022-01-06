@@ -4,10 +4,13 @@ import './styles/app.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TodoContextProvider from "./js/contexts/TodoContext";
+import TodoTable from "./js/components/TodoTable";
 
 function App(props) {
   return (
-    <TodoContextProvider>Hello</TodoContextProvider>
+    <TodoContextProvider>
+      <TodoTable />
+    </TodoContextProvider>
   );
 }
 
