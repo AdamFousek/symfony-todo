@@ -5,11 +5,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TodoContextProvider from "./js/contexts/TodoContext";
 import TodoTable from "./js/components/TodoTable";
+import {CssBaseline} from "@material-ui/core";
 
 function App(props) {
   return (
     <TodoContextProvider>
-      <TodoTable />
+      <CssBaseline>
+        <TodoTable />
+      </CssBaseline>
     </TodoContextProvider>
   );
 }

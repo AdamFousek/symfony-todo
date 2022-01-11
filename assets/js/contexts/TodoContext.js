@@ -1,17 +1,32 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useEffect, useState} from 'react';
+import axios  from 'axios';
 
 export const TodoContext = createContext();
 
 function TodoContextProvider(props) {
-  const [todos, setTodos] = useState([{id: 1, task: 'do something'}]);
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    readTodo();
+  }, [])
+
+  const readTodo = () => {
+    axios.get('/api/todo/read')
+    .then(response => {
+      setTodos(() => {
+        return response.data
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  };
 
   const createTodo = (todo) => {
     setTodos((todos) => {
       return [todo, ...todos];
     })
   };
-
-  const readTodo = () => {};
 
   const updateTodo = (updatedTodo) => {
     const ts = todos.map(todo => {
@@ -22,10 +37,15 @@ function TodoContextProvider(props) {
     });
     setTodos(() => {
       return ts;
-    })
+    });
   };
 
-  const deleteTodo = () => {};
+  const deleteTodo = (id) => {
+    const ts = todos.filter(todo => todo.id !== id);
+    setTodos(() => {
+      return ts
+    });
+  };
 
   return (
     <TodoContext.Provider value={{

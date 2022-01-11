@@ -18,12 +18,12 @@ function TodoTable(props) {
 
   const submitFormHandler = (e) => {
     e.preventDefault();
-    todoCtx.createTodo({id: + new Date(), task: insertedTask});
+    todoCtx.createTodo({id: +new Date(), task: insertedTask});
     setInsertedTask('');
   }
 
   const todos = todoCtx.todos.map((todo, index) => (
-    <Todo todo={todo} key={'todo ' + index} />
+    <Todo todo={todo} key={'todo ' + index}/>
   ));
 
   return (
@@ -38,7 +38,9 @@ function TodoTable(props) {
         <TableBody>
           <TableRow>
             <TableCell>
-              <TextField value={insertedTask} onChange={(e) => {setInsertedTask(e.target.value)}} label="New Task" fullWidth={true}/>
+              <TextField value={insertedTask} onChange={(e) => {
+                setInsertedTask(e.target.value)
+              }} label="New Task" fullWidth={true}/>
             </TableCell>
             <TableCell align="right">
               <IconButton type="submit">
