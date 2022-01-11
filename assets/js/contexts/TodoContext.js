@@ -23,9 +23,17 @@ function TodoContextProvider(props) {
   };
 
   const createTodo = (todo) => {
-    setTodos((todos) => {
-      return [todo, ...todos];
+    axios.post('/api/todo/create', {
+      name: todo.task
+    }).then(response => {
+      console.log(response.data);
+      setTodos((todos) => {
+        return [response.data.todo, ...todos];
+      })
+    }).catch(error => {
+      console.log(error);
     })
+
   };
 
   const updateTodo = (updatedTodo) => {
