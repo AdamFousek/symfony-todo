@@ -3,13 +3,27 @@ import React, {createContext, useState} from 'react';
 export const TodoContext = createContext();
 
 function TodoContextProvider(props) {
-  const [todos, setTodos] = useState([{task: 'do something'}]);
+  const [todos, setTodos] = useState([{id: 1, task: 'do something'}]);
 
-  const createTodo = () => {};
+  const createTodo = (todo) => {
+    setTodos((todos) => {
+      return [todo, ...todos];
+    })
+  };
 
   const readTodo = () => {};
 
-  const updateTodo = () => {};
+  const updateTodo = (updatedTodo) => {
+    const ts = todos.map(todo => {
+      if (todo.id === updatedTodo.id) {
+        todo.task = updatedTodo.task;
+      }
+      return todo;
+    });
+    setTodos(() => {
+      return ts;
+    })
+  };
 
   const deleteTodo = () => {};
 
