@@ -5,6 +5,7 @@ export const TodoContext = createContext();
 
 function TodoContextProvider(props) {
   const [todos, setTodos] = useState([]);
+  const [message, setMessage] = useState({});
 
   useEffect(() => {
     readTodo();
@@ -26,9 +27,13 @@ function TodoContextProvider(props) {
     axios.post('/api/todo/create', {
       name: todo.task
     }).then(response => {
-      console.log(response.data);
-      setTodos((todos) => {
-        return [response.data.todo, ...todos];
+      if (response.data.message.level === 'success') {
+        setTodos((todos) => {
+          return [response.data.todo, ...todos];
+        })
+      }
+      setMessage(message => {
+        return response.data.message;
       })
     }).catch(error => {
       console.log(error);
@@ -37,27 +42,45 @@ function TodoContextProvider(props) {
   };
 
   const updateTodo = (updatedTodo) => {
-    const ts = todos.map(todo => {
-      if (todo.id === updatedTodo.id) {
-        todo.task = updatedTodo.task;
-      }
-      return todo;
-    });
-    setTodos(() => {
-      return ts;
-    });
+    axios.put('/api/todo/update/' + updatedTodo.id, {
+      id: updatedTodo.id,
+      name: updatedTodo.task,
+    })
+    .then(response => {
+      const ts = todos.map(todo => {
+        if (todo.id === updatedTodo.id) {
+          todo.task = updatedTodo.task;
+        }
+        return todo;
+      });
+      setTodos(() => {
+        return ts;
+      });
+    }).catch(error => {
+      console.log(error);
+    })
+
   };
 
   const deleteTodo = (id) => {
-    const ts = todos.filter(todo => todo.id !== id);
-    setTodos(() => {
-      return ts
-    });
+    axios.delete('/api/todo/delete/' + id)
+      .then(response => {
+        console.log(response);
+        const ts = todos.filter(todo => todo.id !== id);
+        setTodos(() => {
+          return ts
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      })
   };
 
   return (
     <TodoContext.Provider value={{
       todos,
+      message,
+      setMessage,
       createTodo,
       readTodo,
       updateTodo,
